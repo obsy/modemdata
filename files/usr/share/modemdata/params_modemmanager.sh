@@ -17,7 +17,7 @@ FORCE_PLMN=$2
 
 mmcli -m "$DEVICE" --signal-setup=3 >/dev/null 2>&1
 
-json_load "$(mmcli -m "$DEVICE" -J --get-cell-info 2>/dev/null | jsonfilter -q -e '@.modem.*')"
+json_load "$(mmcli -m "$DEVICE" -J --get-cell-info 2>/dev/null | jsonfilter -q -e '@.modem.*')" 2>/dev/null
 if json_is_a "cell-info" array; then
 	json_select "cell-info"
 	idx=1
@@ -91,7 +91,7 @@ if [ -n "$T" ]; then
 	fi
 fi
 
-T=$(mmcli -m "$DEVICE" -J)
+T=$(mmcli -m "$DEVICE" -J 2>/dev/null)
 if [ -n "$FORCE_PLMN" ]; then
 	_plmn_description=$(awk -F[\;] '/'$COPS_NUM'/ {print $2}' /usr/share/modemdata/mccmnc.dat)
 	[ -z "$_plmn_description" ] && _plmn_description="$COPS_NUM"
