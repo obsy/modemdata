@@ -74,6 +74,7 @@ opengt
  if $mid($s,f,2) = "AT" goto loop5
  if $mid($s,f,1) = "\^" goto loop5
  if $mid($s,f,1) = "#"  goto loop5
+ if $mid($s,f,5) = "+CREG"  goto loop5
  let l=len($s)
  let $s=$mid($s,f,l)
  print $r,$s,"\n"
