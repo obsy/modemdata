@@ -1,13 +1,12 @@
-Detailed information about the cellular modem
+### Detailed information about the cellular modem
 
-
-- network
+## network
 
 ```
 /usr/share/modemdata/network.sh <network section>
 ```
 
-- product
+## product
 
 via serial port
 ```
@@ -19,7 +18,7 @@ via ModemManager
 /usr/share/modemdata/product_modemmanager.sh <device>
 ```
 
-- connection parameters
+## connection parameters
 
 via serial port
 
@@ -36,3 +35,11 @@ via QMI/MBIM
 ```
 /usr/share/modemdata/params_qmi.sh <device> [0|1 force PLMN from file] [0|1 MBIM device]
 ```
+
+### Precompiled packages for stable release
+
+https://dl.eko.one.pl/packages/opkg/all/
+
+### Precompiled packages for Development Snapshots
+
+https://dl.eko.one.pl/packages/apk/all/
