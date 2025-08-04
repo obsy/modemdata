@@ -50,9 +50,11 @@ if json_is_a "cell-info" array; then
 						;;
 					"tac")
 						_TAC=$VAL
+						_TAC_DEC=$(printf "%d" "0x$_TAC")
 						;;
 					"ci")
 						_CELLID=$VAL
+						_CELLID_DEC=$(printf "%d" "0x$_CELLID")
 						;;
 					"physicalci")
 						_pci=$(printf "%d" "0x$VAL")
@@ -117,29 +119,21 @@ echo "\"operator_mnc\":\"$_plmn_mnc\","
 echo "\"country\":\"$COUNTRY\","
 echo "\"mode\":\"$_MODE\","
 echo "\"registration\":\"$_registration\","
+echo "\"lac_dec\":\"\",\"lac_hex\":\"\",\"cid_dec\":\"${_CELLID_DEC}\",\"cid_hex\":\"${_CELLID}\",\"addon\":["
+ADDON=""
+[ -n "$_rssi" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$(printf "%.1f" $_rssi) dBm\"},"
 if [ "$MODE_NUM" = "7" ]; then
-	[ -n "$_CELLID" ] && _CELLID_DEC=$(printf "%d" "0x$_CELLID")
-fi
-echo "\"lac_dec\":\"\",\"lac_hex\":\"\",\"cid_dec\":\"$_CELLID_DEC\",\"cid_hex\":\"$_CELLID\",\"addon\":["
-[ -n "$_rssi" ] && echo "{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$(printf "%.1f" $_rssi) dBm\"},"
-if [ "$MODE_NUM" = "7" ]; then
-	[ -n "$_rsrp" ] && echo "{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$(printf "%.1f" $_rsrp) dBm\"},"
-	[ -n "$_rsrq" ] && echo "{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$(printf "%.1f" $_rsrq) dB\"},"
-	[ -n "$_snr" ] && echo "{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $_snr) dB\"},"
-	if [ -n "$_TAC" ]; then
-		T_DEC=$(printf "%d" "0x$_TAC")
-		echo "{\"idx\":23,\"key\":\"TAC\",\"value\":\"${T_DEC} (${_TAC})\"},"
-	fi
+	[ -n "$_rsrp" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$(printf "%.1f" $_rsrp) dBm\"},"
+	[ -n "$_rsrq" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$(printf "%.1f" $_rsrq) dB\"},"
+	[ -n "$_snr" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $_snr) dB\"},"
+	[ -n "$_TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"${_TAC_DEC} (${_TAC})\"},"
 fi
 if [ "$MODE_NUM" = "2" ]; then
-	[ -n "$_ecio" ] && echo "{\"idx\":36,\"key\":\"ECIO\",\"value\":\"$_ecio dB\"},"
+	[ -n "$_ecio" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"ECIO\",\"value\":\"$_ecio dB\"},"
 fi
-if [ -n "$_pci" ]; then
-	echo "{\"idx\":33,\"key\":\"PCI\",\"value\":\"$_pci\"},"
-fi
-if [ -n "$_earfcn" ]; then 
-	echo "{\"idx\":34,\"key\":\"EARFCN\",\"value\":\"$_earfcn\"},"
-fi
+[ -n "$_pci" ] && ADDON="${ADDON}{\"idx\":33,\"key\":\"PCI\",\"value\":\"$_pci\"},"
+[ -n "$_earfcn" ] && ADDON="${ADDON}{\"idx\":34,\"key\":\"EARFCN\",\"value\":\"$_earfcn\"},"
+[ -n "$ADDON" ] && echo "${ADDON%,*}"
 echo "]}"
 
 exit 0

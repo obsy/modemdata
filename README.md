@@ -1,4 +1,4 @@
-### Detailed information about the cellular modem
+# Detailed information about the cellular modem
 
 ## network
 
@@ -36,10 +36,10 @@ via QMI/MBIM
 /usr/share/modemdata/params_qmi.sh <device> [0|1 force PLMN from file] [0|1 MBIM device]
 ```
 
-### Precompiled packages for stable release
+# Precompiled packages for stable release
 
 https://dl.eko.one.pl/packages/opkg/all/
 
-### Precompiled packages for Development Snapshots
+# Precompiled packages for Development Snapshots
 
 https://dl.eko.one.pl/packages/apk/all/

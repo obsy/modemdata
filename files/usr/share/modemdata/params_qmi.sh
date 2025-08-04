@@ -117,26 +117,26 @@ if [ "$MODE_NUM" = "7" ]; then
 		CELLID=$(printf "%X%X" $ENODEBID $SCELLID )
 		CELLID_DEC=$(printf "%d" "0x$CELLID")
 	fi
+	[ -n "$TAC" ] && TAC_HEX=$(printf "%X" $TAC)
 fi
 echo "\"lac_dec\":\"\",\"lac_hex\":\"\",\"cid_dec\":\"$CELLID_DEC\",\"cid_hex\":\"$CELLID\",\"addon\":["
-[ -n "$rssi" ] && echo "{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$rssi dBm\"},"
+ADDON=""
+[ -n "$rssi" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$rssi dBm\"},"
 if [ "$MODE_NUM" = "7" ]; then
-	[ -n "$rsrp" ] && echo "{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$rsrp dBm\"},"
-	[ -n "$rsrq" ] && echo "{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$rsrq dB\"},"
-	[ -n "$snr" ] && echo "{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $snr) dB\"},"
-	[ -n "$PB" ] && echo "{\"idx\":30,\"key\":\"Primary band\",\"value\":\"B${PB} (${PF} MHz) @${PBW} MHz\"},"
-	[ -n "$S1B" ] && [ "x$S1STATE" = "xactivated" ] && echo "{\"idx\":50,\"key\":\"(S1) band\",\"value\":\"B${S1B} (${S1F} MHz) @${S1BW} MHz\"},"
-	[ -n "$S2B" ] && [ "x$S2STATE" = "xactivated" ] && echo "{\"idx\":60,\"key\":\"(S2) band\",\"value\":\"B${S2B} (${S2F} MHz) @${S2BW} MHz\"},"
-	[ -n "$S3B" ] && [ "x$S3STATE" = "xactivated" ] && echo "{\"idx\":70,\"key\":\"(S3) band\",\"value\":\"B${S3B} (${S3F} MHz) @${S3BW} MHz\"},"
-	[ -n "$S4B" ] && [ "x$S4STATE" = "xactivated" ] && echo "{\"idx\":80,\"key\":\"(S4) band\",\"value\":\"B${S4B} (${S4F} MHz) @${S4BW} MHz\"},"
-	if [ -n "$TAC" ]; then
-		T_HEX=$(printf "%X" $TAC)
-		echo "{\"idx\":23,\"key\":\"TAC\",\"value\":\"$TAC (${T_HEX})\"},"
-	fi
+	[ -n "$rsrp" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$rsrp dBm\"},"
+	[ -n "$rsrq" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$rsrq dB\"},"
+	[ -n "$snr" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $snr) dB\"},"
+	[ -n "$PB" ] && ADDON="${ADDON}{\"idx\":30,\"key\":\"Primary band\",\"value\":\"B${PB} (${PF} MHz) @${PBW} MHz\"},"
+	[ -n "$S1B" ] && [ "x$S1STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":50,\"key\":\"(S1) band\",\"value\":\"B${S1B} (${S1F} MHz) @${S1BW} MHz\"},"
+	[ -n "$S2B" ] && [ "x$S2STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":60,\"key\":\"(S2) band\",\"value\":\"B${S2B} (${S2F} MHz) @${S2BW} MHz\"},"
+	[ -n "$S3B" ] && [ "x$S3STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":70,\"key\":\"(S3) band\",\"value\":\"B${S3B} (${S3F} MHz) @${S3BW} MHz\"},"
+	[ -n "$S4B" ] && [ "x$S4STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":80,\"key\":\"(S4) band\",\"value\":\"B${S4B} (${S4F} MHz) @${S4BW} MHz\"},"
+	[ -n "$TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"$TAC (${TAC_HEX})\"},"
 fi
 if [ "$MODE_NUM" = "2" ]; then
-	[ -n "$ecio" ] && echo "{\"idx\":36,\"key\":\"ECIO\",\"value\":\"$ecio dB\"},"
+	[ -n "$ecio" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"ECIO\",\"value\":\"$ecio dB\"},"
 fi
+[ -n "$ADDON" ] && echo "${ADDON%,*}"
 echo "]}"
 
 exit 0
