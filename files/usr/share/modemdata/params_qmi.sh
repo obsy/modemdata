@@ -20,10 +20,31 @@ FORCE_PLMN=$2
 MBIM=$3
 [ "x$MBIM" = "x1" ] && MBIM="-m" || MBIM=""
 
-. /usr/share/libubox/jshn.sh
+type=""
+rssi=""
+rsrq=""
+rsrp=""
+snr=""
+ecio=""
+fgtype=""
+fgrsrq=""
+fgrsrp=""
+fgsnr=""
+T=$(uqmi -t 3000 -s -d $DEVICE $MBIM --get-signal-info 2>/dev/null)
+if [ -n "$(echo "$T" | jsonfilter -q -e '@.type')" ]; then
+	eval $(echo "$T" | jsonfilter -q -e 'type=@.type' -e 'rssi=@.rssi' -e 'rsrq=@.rsrq' -e 'rsrp=@.rsrp' -e 'snr=@.snr' -e 'ecio=@.ecio')
+else
+	eval $(echo "$T" | jsonfilter -q \
+		-e 'type=@[0].type' -e 'rssi=@[0].rssi' -e 'rsrq=@[0].rsrq' -e 'rsrp=@[0].rsrp' -e 'snr=@[0].snr' \
+		-e 'fgtype=@[1].type' -e 'fgrsrq=@[1].rsrq' -e 'fgrsrp=@[1].rsrp' -e 'fgsnr=@[1].snr')
+fi
 
-json_load "$(uqmi -t 3000 -s -d $DEVICE $MBIM --get-serving-system --get-signal-info | sed 'N;s|\n| |;s|} {|,|')"
-json_get_vars type rssi rsrq rsrp snr ecio registration plmn_mcc plmn_mnc plmn_description roaming
+registration=""
+plmn_mcc=""
+plmn_mnc=""
+plmn_description=""
+roaming=""
+eval $(uqmi -t 3000 -s -d $DEVICE $MBIM --get-serving-system | jsonfilter -q -e 'registration=@.registration' -e 'plmn_mcc=@.plmn_mcc' -e 'plmn_mnc=@.plmn_mnc' -e 'plmn_description=@.plmn_description' -e 'roaming=@.roaming')
 
 MODE=$(echo $type | tr 'a-z' 'A-Z')
 case "$MODE" in
@@ -31,6 +52,9 @@ case "$MODE" in
 	"WCDMA") MODE_NUM=2;;
 	*) MODE_NUM=0;;
 esac
+if [ "$MODE_NUM" = "7" ] && [ "x$fgtype" = "x5gnr" ]; then
+	MODE="5G NSA"
+fi
 
 if [ -n "$FORCE_PLMN" ]; then
 	COPS_NUM="$plmn_mcc"$(printf %02d $plmn_mnc)
@@ -67,35 +91,54 @@ esac
 PB=""
 PF=""
 PBW=""
+PPCI=""
+PEARFCN=""
 S1B=""
 S1F=""
 S1BW=""
 S1STATE=""
+S1PCI=""
+S1EARFCN=""
 S2B=""
 S2F=""
 S2BW=""
 S2STATE=""
+S2PCI=""
+S2EARFCN=""
 S3B=""
 S3F=""
 S3BW=""
 S3STATE=""
+S3PCI=""
+S3EARFCN=""
 S4B=""
 S4F=""
 S4BW=""
 S4STATE=""
+S4PCI=""
+S4EARFCN=""
 if [ "$MODE_NUM" = "7" ]; then
-	eval $(uqmi -t 3000 -s -d $DEVICE $MBIM --get-lte-cphy-ca-info 2>/dev/null | jsonfilter -q \
-		-e 'PB=@.primary.band' -e 'PF=@.primary.frequency' -e 'PBW=@.primary.bandwidth' \
-		-e 'S1B=@.secondary_1.band' -e 'S1F=@.secondary_1.frequency' -e 'S1BW=@.secondary_1.bandwidth' -e 'S1STATE=@.secondary_1.state' \
-		-e 'S2B=@.secondary_2.band' -e 'S2F=@.secondary_2.frequency' -e 'S2BW=@.secondary_2.bandwidth' -e 'S2STATE=@.secondary_2.state' \
-		-e 'S3B=@.secondary_3.band' -e 'S3F=@.secondary_3.frequency' -e 'S3BW=@.secondary_3.bandwidth' -e 'S3STATE=@.secondary_3.state' \
-		-e 'S4B=@.secondary_4.band' -e 'S4F=@.secondary_4.frequency' -e 'S4BW=@.secondary_4.bandwidth' -e 'S4STATE=@.secondary_4.state')
+	T=$(uqmi -t 3000 -s -d $DEVICE $MBIM --get-lte-cphy-ca-info 2>/dev/null)
+	eval $(echo "$T" | jsonfilter -q -e 'PB=@.primary.band' -e 'PF=@.primary.frequency' -e 'PBW=@.primary.bandwidth' -e 'PPCI=@.primary.cell_id' -e 'PEARFCN=@.primary.channel')
+	IDX=1
+	for i in 1 2 3 4 5 6 7 8 9 10; do
+		T1=$(echo "$T" | jsonfilter -q -e "@.secondary_${i}.band")
+		if [ -n "$T1" ]; then
+			eval $(echo "$T" | jsonfilter -q -e "S${IDX}B=@.secondary_${i}.band" -e "S${IDX}F=@.secondary_${i}.frequency" -e "S${IDX}BW=@.secondary_${i}.bandwidth" -e "S${IDX}STATE=@.secondary_${i}.state" -e "S${IDX}PCI=@.secondary_${i}.cell_id" -e "S${IDX}EARFCN=@.secondary_${i}.channel")
+			[ $IDX = "4" ] && break
+			IDX=$((IDX + 1))
+		fi
+	done
 	[ -n "$PB" ] && MODE="${MODE} B${PB} (${PF} MHz)"
 	[ -n "$S1B" ] && [ "x$S1STATE" = "xactivated" ] && MODE="${MODE} / B${S1B} (${S1F} MHz)"
 	[ -n "$S2B" ] && [ "x$S2STATE" = "xactivated" ] && MODE="${MODE} / B${S2B} (${S2F} MHz)"
 	[ -n "$S3B" ] && [ "x$S3STATE" = "xactivated" ] && MODE="${MODE} / B${S3B} (${S3F} MHz)"
 	[ -n "$S4B" ] && [ "x$S4STATE" = "xactivated" ] && MODE="${MODE} / B${S4B} (${S4F} MHz)"
-	echo "$MODE" | grep -q " / B" && MODE=${MODE/LTE/LTE_A}
+	if [ -n "$fgtype" ]; then
+		MODE="${MODE} / ?"
+	else
+		echo "$MODE" | grep -q " / B" && MODE=${MODE/LTE/LTE_A}
+	fi
 fi
 
 echo "{"
@@ -123,15 +166,49 @@ echo "\"lac_dec\":\"\",\"lac_hex\":\"\",\"cid_dec\":\"$CELLID_DEC\",\"cid_hex\":
 ADDON=""
 [ -n "$rssi" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$rssi dBm\"},"
 if [ "$MODE_NUM" = "7" ]; then
+	[ -n "$TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"$TAC (${TAC_HEX})\"},"
+	[ -n "$PB" ] && ADDON="${ADDON}{\"idx\":30,\"key\":\"Primary band\",\"value\":\"B${PB} (${PF} MHz) @${PBW} MHz\"},"
 	[ -n "$rsrp" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$rsrp dBm\"},"
 	[ -n "$rsrq" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$rsrq dB\"},"
 	[ -n "$snr" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $snr) dB\"},"
-	[ -n "$PB" ] && ADDON="${ADDON}{\"idx\":30,\"key\":\"Primary band\",\"value\":\"B${PB} (${PF} MHz) @${PBW} MHz\"},"
-	[ -n "$S1B" ] && [ "x$S1STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":50,\"key\":\"(S1) band\",\"value\":\"B${S1B} (${S1F} MHz) @${S1BW} MHz\"},"
-	[ -n "$S2B" ] && [ "x$S2STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":60,\"key\":\"(S2) band\",\"value\":\"B${S2B} (${S2F} MHz) @${S2BW} MHz\"},"
-	[ -n "$S3B" ] && [ "x$S3STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":70,\"key\":\"(S3) band\",\"value\":\"B${S3B} (${S3F} MHz) @${S3BW} MHz\"},"
-	[ -n "$S4B" ] && [ "x$S4STATE" = "xactivated" ] && ADDON="${ADDON}{\"idx\":80,\"key\":\"(S4) band\",\"value\":\"B${S4B} (${S4F} MHz) @${S4BW} MHz\"},"
-	[ -n "$TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"$TAC (${TAC_HEX})\"},"
+	[ -n "$PPCI" ] && ADDON="${ADDON}{\"idx\":33,\"key\":\"PCI\",\"value\":\"$PPCI\"},"
+	[ -n "$PEARFCN" ] && ADDON="${ADDON}{\"idx\":34,\"key\":\"EARFCN\",\"value\":\"$PEARFCN\"},"
+	IDX=50
+	SCC=1
+	if [ -n "$S1B" ] && [ "x$S1STATE" = "xactivated" ]; then
+		ADDON="${ADDON}{\"idx\":${IDX} ,\"key\":\"(S${SCC}) band\",\"value\":\"B${S1B} (${S1F} MHz) @${S1BW} MHz\"},"
+		[ -n "$S1PCI" ] && ADDON="${ADDON}{\"idx\":$((IDX + 3)),\"key\":\"(S${SCC}) PCI\",\"value\":\"$S1PCI\"},"
+		[ -n "$S1EARFCN" ] && ADDON="${ADDON}{\"idx\":$((IDX + 4)),\"key\":\"(S${SCC}) EARFCN\",\"value\":\"$S1EARFCN\"},"
+		IDX=$((IDX + 10))
+		SCC=$((SCC + 1))
+	fi
+	if [ -n "$S2B" ] && [ "x$S2STATE" = "xactivated" ]; then
+		ADDON="${ADDON}{\"idx\":${IDX},\"key\":\"(S${SCC}) band\",\"value\":\"B${S2B} (${S2F} MHz) @${S2BW} MHz\"},"
+		[ -n "$S2PCI" ] && ADDON="${ADDON}{\"idx\":$((IDX + 3)),\"key\":\"(S${SCC}) PCI\",\"value\":\"$S2PCI\"},"
+		[ -n "$S2EARFCN" ] && ADDON="${ADDON}{\"idx\":$((IDX + 4)),\"key\":\"(S${SCC}) EARFCN\",\"value\":\"$S2EARFCN\"},"
+		IDX=$((IDX + 10))
+		SCC=$((SCC + 1))
+	fi
+	if [ -n "$S3B" ] && [ "x$S3STATE" = "xactivated" ]; then
+		ADDON="${ADDON}{\"idx\":${IDX},\"key\":\"(S${SCC}) band\",\"value\":\"B${S3B} (${S3F} MHz) @${S3BW} MHz\"},"
+		[ -n "$S3PCI" ] && ADDON="${ADDON}{\"idx\":$((IDX + 3)),\"key\":\"(S${SCC}) PCI\",\"value\":\"$S3PCI\"},"
+		[ -n "$S3EARFCN" ] && ADDON="${ADDON}{\"idx\":$((IDX + 4)),\"key\":\"(S${SCC}) EARFCN\",\"value\":\"$S3EARFCN\"},"
+		IDX=$((IDX + 10))
+		SCC=$((SCC + 1))
+	fi
+	if [ -n "$S4B" ] && [ "x$S4STATE" = "xactivated" ]; then
+		ADDON="${ADDON}{\"idx\":${IDX},\"key\":\"(S${SCC}) band\",\"value\":\"B${S4B} (${S4F} MHz) @${S4BW} MHz\"},"
+		[ -n "$S4PCI" ] && ADDON="${ADDON}{\"idx\":$((IDX + 3)),\"key\":\"(S${SCC}) PCI\",\"value\":\"$S4PCI\"},"
+		[ -n "$S4EARFCN" ] && ADDON="${ADDON}{\"idx\":$((IDX + 4)),\"key\":\"(S${SCC}) EARFCN\",\"value\":\"$S4EARFCN\"},"
+		IDX=$((IDX + 10))
+		SCC=$((SCC + 1))
+	fi
+	if [ -n "$fgtype" ]; then
+		ADDON="${ADDON}{\"idx\":${IDX},\"key\":\"(S${SCC}) band\",\"value\":\"5G\"},"
+		[ -n "$fgrsrp" ] && ADDON="${ADDON}{\"idx\":$((IDX + 6)),\"key\":\"(S${SCC}) RSRP\",\"value\":\"$fgrsrp dBm\"},"
+		[ -n "$fgrsrq" ] && ADDON="${ADDON}{\"idx\":$((IDX + 7)),\"key\":\"(S${SCC}) RSRQ\",\"value\":\"$fgrsrq dB\"},"
+		[ -n "$fgsnr" ] && ADDON="${ADDON}{\"idx\":$((IDX + 8)),\"key\":\"(S${SCC}) SNR\",\"value\":\"$(printf "%.1f" $fgsnr) dB\"},"
+	fi
 fi
 if [ "$MODE_NUM" = "2" ]; then
 	[ -n "$ecio" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"ECIO\",\"value\":\"$ecio dB\"},"
