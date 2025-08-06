@@ -86,7 +86,7 @@ if [ -n "$T" ]; then
 	_rscp=""
 	_ecio=""
 	eval $(echo "$T" | jsonfilter -q -e "_rsrp=@.rsrp" -e "_rsrq=@.rsrq" -e "_rssi=@.rssi" -e "_snr=@.snr" -e "_rscp=@.rscp" -e "_ecio=@.ecio")
-	if [ -n "$_rssi" ]; then
+	if [ -n "$_rssi" ] && [ "$_rssi" != "--" ]; then
 		_rssi=$(echo "$_rssi" | awk '{printf "%d\n", $1}')
 		[ "$_rssi" -ge -51 ] && _rssi=-51
 		_SIGNAL=$(((_rssi+113)*100/62))
@@ -121,11 +121,11 @@ echo "\"mode\":\"$_MODE\","
 echo "\"registration\":\"$_registration\","
 echo "\"lac_dec\":\"\",\"lac_hex\":\"\",\"cid_dec\":\"${_CELLID_DEC}\",\"cid_hex\":\"${_CELLID}\",\"addon\":["
 ADDON=""
-[ -n "$_rssi" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$(printf "%.1f" $_rssi) dBm\"},"
+[ -n "$_rssi" ] && [ "$_rssi" != "--" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$(printf "%.1f" $_rssi) dBm\"},"
 if [ "$MODE_NUM" = "7" ]; then
-	[ -n "$_rsrp" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$(printf "%.1f" $_rsrp) dBm\"},"
-	[ -n "$_rsrq" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$(printf "%.1f" $_rsrq) dB\"},"
-	[ -n "$_snr" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $_snr) dB\"},"
+	[ -n "$_rsrp" ] && [ "$_rsrp" != "--" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$(printf "%.1f" $_rsrp) dBm\"},"
+	[ -n "$_rsrq" ] && [ "$_rsrp" != "--" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$(printf "%.1f" $_rsrq) dB\"},"
+	[ -n "$_snr" ] && [ "$_snr" != "--" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $_snr) dB\"},"
 	[ -n "$_TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"${_TAC_DEC} (${_TAC})\"},"
 fi
 if [ "$MODE_NUM" = "2" ]; then
