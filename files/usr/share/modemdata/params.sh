@@ -150,6 +150,15 @@ band5g() {
 getdevicevendorproduct() {
 	devname="$(basename $1)"
 	case "$devname" in
+		'mhi_DUN'*)
+			devpath=$(find /sys/devices -name "$devname" -type d 2>/dev/null | head -1)
+			T=${devpath%/*/*/*}
+			if [ -e $T/vendor ] && [ -e $T/device ]; then
+				V=$(cat $T/vendor)
+				D=$(cat $T/device)
+				echo "pci/${V/0x/}${D/0x/}"
+			fi
+			;;
 		'wwan'*'at'*)
 			devpath="$(readlink -f /sys/class/wwan/$devname/device)"
 			T=${devpath%/*/*/*}
