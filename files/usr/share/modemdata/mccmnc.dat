@@ -24,6 +24,7 @@
 20606;Lycamobile
 20608;VOO
 20610;Orange Belgium
+20612;DIGI BE
 20620;Base
 20801;Orange
 20802;Orange
@@ -143,8 +144,6 @@
 23401;Vectone Mobile
 23402;O2 (UK)
 23403;Airtel-Vodafone
-23403;Airtel-Vodafone
-23403;Airtel-Vodafone
 23408;BT OnePhone
 23410;O2 (UK)
 23411;O2 (UK)
@@ -163,18 +162,12 @@
 23433;EE
 23434;EE
 23436;Sure Mobile
-23436;Sure Mobile
 23440;spusu
-23450;JT
-23450;JT
 23450;JT
 23451;Relish
 23453;Tango Extend
 23454;iD Mobile
 23455;Sure Mobile
-23455;Sure Mobile
-23455;Sure Mobile
-23458;Pronto GSM
 23458;Pronto GSM
 23472;Hanhaa Mobile
 23476;BT
@@ -205,11 +198,9 @@
 24010;Spring Mobil
 24012;Lycamobile
 24017;Gotanet
-24019;Vectone Mobile
 24021;MobiSir
 24024;Sweden 2G
 24038;Voxbone
-24063;FTS
 24201;Telenor
 24202;Telia
 24205;OneCall / MyCall
@@ -315,6 +306,7 @@
 26243;Lycamobile
 26601;GibTel
 26801;Vodafone
+26802;DIGI PT
 26803;NOS
 26804;LycaMobile
 26806;MEO
@@ -424,7 +416,6 @@
 310012;Verizon
 310020;Union Wireless
 310032;IT&E Wireless
-310032;IT&E Wireless
 310034;Airpeak
 310050;GCI
 310053;Virgin Mobile
@@ -434,28 +425,21 @@
 310090;AT&T
 310100;Plateau Wireless
 310110;IT&E Wireless
-310110;IT&E Wireless
 310120;T-Mobile
 310130;Carolina West Wireless
-310140;GTA Wireless
 310140;GTA Wireless
 310150;AT&T
 310170;AT&T
 310190;GCI
 310260;T-Mobile
-310260;T-Mobile
-310260;T-Mobile
 310320;Cellular One
 310340;Limitless Mobile
-310370;Docomo
-310370;Docomo
 310370;Docomo
 310390;Cellular One of East Texas
 310410;AT&T
 310420;World Mobile
 310430;GCI
 310450;Viaero
-310480;IT&E Wireless
 310480;IT&E Wireless
 310500;Alltel
 310650;Jasper
@@ -474,7 +458,6 @@
 311080;Pine Cellular
 311090;AT&T
 311120;IT&E Wireless
-311120;IT&E Wireless
 311140;Bravado Wireless
 311230;C Spire
 311320;Choice Wireless
@@ -483,7 +466,6 @@
 311370;GCI Wireless
 311420;NorthwestCell
 311450;PTCI
-311470;Viya
 311470;Viya
 311480;Verizon
 311550;Choice Wireless
@@ -494,7 +476,6 @@
 311650;United Wireless
 311660;Metro
 311670;Pine Belt Wireless
-311780;ASTCA
 311780;ASTCA
 311840;Cellcom
 311850;Cellcom
@@ -526,8 +507,6 @@
 313510;Claro
 313770;Tango Extend
 313790;Liberty
-313790;Liberty
-313790;Liberty
 313860;Nextlink
 313890;TCOE
 313930;Rock Wireless
@@ -535,9 +514,7 @@
 314540;RGTN
 314550;REALLY
 314680;Xfinity
-330000;Open Mobile
 330110;Claro Puerto Rico
-330120;Open Mobile
 334020;Telcel
 334030;Movistar
 334050;Unefon
@@ -550,19 +527,12 @@
 334210;YO Mobile
 334220;Megamóvil
 338050;Digicel
-338050;Digicel
-33805;Digicel
-33805;Digicel
-33805;Digicel
 33805;Digicel
 338180;FLOW
 34001;Orange
-34001;Orange
-34002;SFR Caraïbe
 34002;SFR Caraïbe
 34003;FLOW
 34008;Dauphin
-34020;Digicel
 34020;Digicel
 342600;FLOW
 342750;Digicel
@@ -803,7 +773,6 @@
 42502;Cellcom
 42503;Pelephone
 42505;Jawwal
-42505;Jawwal
 42506;Ooredoo
 42506;Wataniya Mobile
 42507;Hot Mobile
@@ -980,13 +949,11 @@
 51503;SMART
 51505;Sun Cellular
 51566;DITO
-52000;TrueMove H / my by NT
+52000;my by NT
 52001;AIS
-52002;NT Mobile
 52003;AIS
 52004;TrueMove H
 52005;dtac
-52015;AIS-T / NT Mobile
 52018;dtac
 52099;TrueMove
 52501;SingTel
