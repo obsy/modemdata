@@ -45,6 +45,7 @@ plmn_mnc=""
 plmn_description=""
 roaming=""
 eval $(uqmi -t 3000 -s -d $DEVICE $MBIM --get-serving-system | jsonfilter -q -e 'registration=@.registration' -e 'plmn_mcc=@.plmn_mcc' -e 'plmn_mnc=@.plmn_mnc' -e 'plmn_description=@.plmn_description' -e 'roaming=@.roaming')
+[ -n "$plmn_mnc" ] && plmn_mnc=$(printf %02d $plmn_mnc)
 
 MODE=$(echo $type | tr 'a-z' 'A-Z')
 case "$MODE" in
@@ -56,10 +57,22 @@ if [ "$MODE_NUM" = "7" ] && [ "x$fgtype" = "x5gnr" ]; then
 	MODE="5G NSA"
 fi
 
-if [ -n "$FORCE_PLMN" ]; then
-	COPS_NUM="$plmn_mcc"$(printf %02d $plmn_mnc)
-	plmn_description=$(awk -F[\;] '/'$COPS_NUM'/ {print $2}' /usr/share/modemdata/mccmnc.dat)
-	[ -z "$plmn_description" ] && plmn_description="$COPS_NUM"
+COPS_NUM="${plmn_mcc}${plmn_mnc}"
+if [ -n "$COPS_NUM" ]; then
+	COUNTRY=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' /usr/share/modemdata/mccmnc.dat)
+	if [ -z "$COUNTRY" ]; then
+		T=$(printf %03d $plmn_mnc)
+		COUNTRY=$(awk -F[\;] '/^'${plmn_mcc}${T}';/ {print $2}' /usr/share/modemdata/mccmnc.dat)
+		if [ -n "$COUNTRY" ]; then
+			plmn_mnc="$T"
+			COPS_NUM="${plmn_mcc}${plmn_mnc}"
+		fi
+	fi
+
+	if [ -n "$FORCE_PLMN" ]; then
+		plmn_description=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' /usr/share/modemdata/mccmnc.dat)
+		[ -z "$plmn_description" ] && plmn_description="$COPS_NUM"
+	fi
 fi
 
 SIGNAL=0
@@ -145,8 +158,7 @@ echo "{"
 echo "\"signal\":\"$SIGNAL\","
 echo "\"operator_name\":\"$plmn_description\","
 echo "\"operator_mcc\":\"$plmn_mcc\","
-echo "\"operator_mnc\":\"$(printf "%02d" $plmn_mnc)\","
-[ -n "$plmn_mcc" ] && COUNTRY=$(awk -F[\;] '/^'$plmn_mcc';/ {print $2}' /usr/share/modemdata/mcc.dat)
+echo "\"operator_mnc\":\"$plmn_mnc\","
 echo "\"country\":\"$COUNTRY\","
 echo "\"mode\":\"$MODE\","
 echo "\"registration\":\"$registration\","

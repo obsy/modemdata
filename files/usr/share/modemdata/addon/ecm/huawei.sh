@@ -129,11 +129,11 @@ else
 fi
 
 COPS=$(getvalue net-current-plmn FullName)
-T=$(getvaluen net-current-plmn Numeric)
-COPS_MCC=$(echo "$T" | cut -c1-3)
-COPS_MNC=$(echo "$T" | cut -c4- )
+COPS_NUM=$(getvaluen net-current-plmn Numeric)
+COPS_MCC=$(echo "$COPS_NUM" | cut -c1-3)
+COPS_MNC=$(echo "$COPS_NUM" | cut -c4- )
 COUNTRY=""
-[ -n "$COPS_MCC" ] && COUNTRY=$(awk -F[\;] '/^'$COPS_MCC';/ {print $2}' /usr/share/modemdata/mcc.dat)
+[ -n "$COPS_NUM" ] && COUNTRY=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' /usr/share/modemdata/mccmnc.dat)
 
 T=$(getvaluen monitoring-status CurrentNetworkType)
 case $T in

@@ -40,6 +40,6 @@ via QMI/MBIM
 
 https://dl.eko.one.pl/packages/opkg/all/
 
-# Precompiled packages for Development Snapshots
+# Precompiled packages for development snapshots
 
 https://dl.eko.one.pl/packages/apk/all/

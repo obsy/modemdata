@@ -228,10 +228,10 @@ fi
 if [ -z "$FORCE_PLMN" ]; then
 	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS:\s*.,0/ {print $2}' | awk '{if(NF==2 && tolower($1)==tolower($2)){print $1}else{print $0}}')
 else
-	[ -n "$COPS_NUM" ] && COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
+	[ -n "$COPS_NUM" ] && COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' $RES/mccmnc.dat)
 fi
 [ -z "$COPS" ] && COPS=$COPS_NUM
-[ -n "$COPS_MCC" ] && COUNTRY=$(awk -F[\;] '/^'$COPS_MCC';/ {print $2}' $RES/mcc.dat)
+[ -n "$COPS_NUM" ] && COUNTRY=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
 
 # CREG
 eval $(echo "$O" | busybox awk -F[,] '/^\+CREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";LAC_HEX=\"%X\";CID_HEX=\"%X\";LAC_DEC=\"%d\";CID_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, "0x"$4, "0x"$3, "0x"$4, $5}')

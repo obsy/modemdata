@@ -95,7 +95,7 @@ fi
 
 T=$(mmcli -m "$DEVICE" -J 2>/dev/null)
 if [ -n "$FORCE_PLMN" ]; then
-	_plmn_description=$(awk -F[\;] '/'$COPS_NUM'/ {print $2}' /usr/share/modemdata/mccmnc.dat)
+	_plmn_description=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' /usr/share/modemdata/mccmnc.dat)
 	[ -z "$_plmn_description" ] && _plmn_description="$COPS_NUM"
 else
 	_plmn_description=$(echo "$T" | jsonfilter -q -e "@.modem['3gpp']['operator-name']")
@@ -115,7 +115,7 @@ echo "\"signal\":\"$_SIGNAL\","
 echo "\"operator_name\":\"$_plmn_description\","
 echo "\"operator_mcc\":\"$_plmn_mcc\","
 echo "\"operator_mnc\":\"$_plmn_mnc\","
-[ -n "$_plmn_mcc" ] && COUNTRY=$(awk -F[\;] '/^'$_plmn_mcc';/ {print $2}' /usr/share/modemdata/mcc.dat)
+[ -n "$COPS_NUM" ] && COUNTRY=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' /usr/share/modemdata/mccmnc.dat)
 echo "\"country\":\"$COUNTRY\","
 echo "\"mode\":\"$_MODE\","
 echo "\"registration\":\"$_registration\","
