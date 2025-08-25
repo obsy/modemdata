@@ -404,6 +404,7 @@
 302690;Canada;Bell
 302710;Canada;Globalstar
 302720;Canada;Rogers Wireless
+302723;Canada;Rogers Wireless
 302760;Canada;Public Mobile
 302770;Canada;TNW Wireless
 302780;Canada;SaskTel
@@ -554,15 +555,15 @@
 358110;Saint Lucia;FLOW
 360050;Saint Vincent and the Grenadines;Digicel
 360110;Saint Vincent and the Grenadines;FLOW
-36251;Netherlands Antilles;Telcell
-36254;Netherlands Antilles;ECC
-36260;Netherlands Antilles;FLOW
-36268;Netherlands Antilles;Digicel
-36269;Netherlands Antilles;Digicel
-36276;Netherlands Antilles;Digicel
-36278;Netherlands Antilles;Kla Mobile
-36291;Netherlands Antilles;FLOW
-36294;Netherlands Antilles;Bayòs
+36251;Former Netherlands Antilles;Telcell
+36254;Former Netherlands Antilles;ECC
+36260;Former Netherlands Antilles;FLOW
+36268;Former Netherlands Antilles;Digicel
+36269;Former Netherlands Antilles;Digicel
+36276;Former Netherlands Antilles;Digicel
+36278;Former Netherlands Antilles;Kla Mobile
+36291;Former Netherlands Antilles;FLOW
+36294;Former Netherlands Antilles;Bayòs
 36301;Aruba;SETAR
 36302;Aruba;Digicel
 36439;Bahamas;BTC
@@ -776,7 +777,7 @@
 42505;Palestine;Jawwal
 42506;Palestine;Ooredoo
 42507;Israel;Hot Mobile
-42508;Israel;Golan Telecom
+42508;Israel;Cellcom
 42509;Israel;We4G
 42510;Israel;Partner
 42512;Israel;x2one
@@ -948,11 +949,13 @@
 51503;Philippines;SMART
 51505;Philippines;Sun Cellular
 51566;Philippines;DITO
-52000;Thailand;my by NT
+52000;Thailand;TrueMove H / my by NT
 52001;Thailand;AIS
+52002;Thailand;NT Mobile
 52003;Thailand;AIS
 52004;Thailand;TrueMove H
 52005;Thailand;dtac
+52015;Thailand;AIS-T / NT Mobile
 52018;Thailand;dtac
 52099;Thailand;TrueMove
 52501;Singapore;SingTel
