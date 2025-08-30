@@ -467,7 +467,7 @@ if [ -n "$T" ]; then
 						T6=$(echo "$O" | awk -F[,:] '/^\+QENG: "NR5G-NSA"/{print $6}')
 						[ -n "$T6" ] && [ "$T6" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T6 dBm"
 						T6=$(echo "$O" | awk -F[,:] '/^\+QENG: "NR5G-NSA"/{print $8}')
-						[ -n "$T6" ] && [ "$T6" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRP" "$T6 dB"
+						[ -n "$T6" ] && [ "$T6" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T6 dB"
 						# without calculating?
 						T6=$(echo "$O" | awk -F[,:] '/^\+QENG: "NR5G-NSA"/{print $7}')
 						[ -n "$T6" ] && [ "$T6" != "-" ] && addon $((POS + 8)) "(S${IDX}) SINR" "$T6"
