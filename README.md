@@ -1,5 +1,7 @@
 # Detailed information about the cellular modem
 
+Package designed for OpenWrt
+
 ## network
 
 ```
@@ -43,3 +45,8 @@ https://dl.eko.one.pl/packages/opkg/all/
 # Precompiled packages for development snapshots
 
 https://dl.eko.one.pl/packages/apk/all/
+
+# The project is used in
+- [3ginfo](https://eko.one.pl/?p=openwrt-3ginfo) - [src](https://github.com/obsy/packages/tree/master/3ginfo)
+- [easyconfig](https://eko.one.pl/?p=easyconfig) - [src](https://github.com/obsy/easyconfig)
+- [luci-app-modemdata](https://eko.one.pl/forum/viewtopic.php?id=24829) - [src](https://github.com/4IceG/luci-app-modemdata)
