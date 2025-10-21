@@ -25,7 +25,7 @@
 20606;Belgium;Lycamobile
 20608;Belgium;VOO
 20610;Belgium;Orange Belgium
-20612;Belgium;DIGI BE
+20612;Belgium;DIGI Belgium
 20620;Belgium;Base
 20801;France;Orange
 20802;France;Orange
@@ -64,7 +64,7 @@
 21427;Spain;Truphone
 21451;Spain;ADIF
 21601;Hungary;Yettel Hungary
-21603;Hungary;DIGI
+21603;Hungary;one
 21630;Hungary;Telekom
 21670;Hungary;one
 21671;Hungary;one
@@ -109,7 +109,6 @@
 22802;Switzerland;Sunrise
 22803;Switzerland;Salt
 22806;Switzerland;SBB-CFF-FFS
-22808;Switzerland;Tele4u
 22853;Switzerland;upc cablecom
 22854;Switzerland;Lycamobile
 22858;Switzerland;beeone
@@ -242,6 +241,7 @@
 25009;Russian Federation;Skylink
 25011;Russian Federation;Yota
 25016;Russian Federation;Miatel
+25018;Russian Federation;12.ru
 25019;Russian Federation;Alfa-Mobile
 25020;Russian Federation;t2
 25021;Russian Federation;GlobalTel
@@ -643,18 +643,18 @@
 40479;India;BSNL Mobile
 40480;India;BSNL Mobile
 40481;India;BSNL Mobile
-40482;India;Vi India
+40482;India;Idea
 40483;India;Reliance
 40485;India;Reliance
 40486;India;Vi India
-40490;India;AirTel
-40492;India;AirTel
-40493;India;AirTel
-40494;India;AirTel
-40495;India;AirTel
-40496;India;AirTel
-40497;India;AirTel
-40498;India;AirTel
+40490;India;AirTel (Maharashtra)
+40492;India;AirTel (Mumbai)
+40493;India;AirTel (Madhya Pradesh)
+40494;India;AirTel (Tamil Nadu)
+40495;India;AirTel (Kerala)
+40496;India;AirTel (Haryana)
+40497;India;AirTel (UP-West)
+40498;India;AirTel (Gujarat)
 405048;India;INDIAN RAILWAYS GSM-R
 40506;India;Reliance
 40507;India;Reliance
@@ -673,40 +673,40 @@
 40521;India;Reliance
 40522;India;Reliance
 40523;India;Reliance
-40551;India;AirTel
-40552;India;AirTel
-40553;India;AirTel
-40554;India;AirTel
-40555;India;Airtel
-40556;India;AirTel
+40551;India;AirTel (West Bengal)
+40552;India;AirTel (Bihar)
+40553;India;AirTel (Orissa)
+40554;India;AirTel (UP East)
+40555;India;Airtel (Jammu & Kasmir)
+40556;India;AirTel (Assam)
 40567;India;Vi India
-40570;India;Vi India
+40570;India;Idea
 405750;India;Vi India
 405751;India;Vi India
 405753;India;Vi India
 405755;India;Vi India
-405840;India;Jio
-405854;India;Jio
-405855;India;Jio
-405856;India;Jio
-405857;India;Jio
-405858;India;Jio
-405859;India;Jio
-405860;India;Jio
-405861;India;Jio
-405862;India;Jio
-405863;India;Jio
-405864;India;Jio
-405865;India;Jio
-405866;India;Jio
-405867;India;Jio
-405868;India;Jio
-405869;India;Jio
-405870;India;Jio
-405871;India;Jio
-405872;India;Jio
-405873;India;Jio
-405874;India;Jio
+405840;India;Jio Bengal
+405854;India;Jio Andhra Pradesh
+405855;India;Jio Assam
+405856;India;Jio Bihar
+405857;India;Jio Gujarat
+405858;India;Jio Haryana
+405859;India;Jio Pradesh
+405860;India;Jio Mumbai
+405861;India;Jio Karnataka
+405862;India;Jio Kerala
+405863;India;Jio Madhya Pradesh
+405864;India;Jio Maharashtra
+405865;India;Jio North East
+405866;India;Jio Orissa
+405867;India;Jio Punjab
+405868;India;Jio Rajasthan
+405869;India;Jio Tamil Nadu
+405870;India;Jio Uttar Pradesh (West)
+405871;India;Jio Uttar Pradesh (East)
+405872;India;Jio Delhi
+405873;India;Jio Kolkata
+405874;India;Jio Mumbai
 41001;Pakistan;Jazz
 41002;Pakistan;3G EVO / CharJi 4G
 41003;Pakistan;Ufone
@@ -845,6 +845,7 @@
 44051;Japan;au
 44052;Japan;au
 44053;Japan;au
+44054;Japan;au
 45002;South Korea;KT
 45005;South Korea;SKTelecom
 45006;South Korea;LG U+
@@ -925,7 +926,6 @@
 50510;Australia;Norfolk Is.
 50511;Australia;Telstra
 50513;Australia;RailCorp
-50514;Australia;AAPT
 50516;Australia;VicTrack
 50517;Australia;Optus
 50519;Australia;Lycamobile
