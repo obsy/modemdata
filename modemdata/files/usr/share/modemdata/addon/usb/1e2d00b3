@@ -59,7 +59,7 @@ while true; do
 
 	IDX=$((IDX + 10))
 	case $IDX in
-		50) PREFIX="(S2)";;
+		50) PREFIX="(S1)";;
 		60) PREFIX="(S2)";;
 		70) PREFIX="(S3)";;
 		80) PREFIX="(S4)";;
@@ -93,7 +93,7 @@ T=$(echo "$O" | awk -F: '/^nr_band:/ {print $2}' | xargs)
 if [ -n "$T" ]; then
 	IDX=$((IDX + 10))
 	case $IDX in
-		50) PREFIX="(S2)";;
+		50) PREFIX="(S1)";;
 		60) PREFIX="(S2)";;
 		70) PREFIX="(S3)";;
 		80) PREFIX="(S4)";;
