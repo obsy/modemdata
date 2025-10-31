@@ -59,10 +59,10 @@ fi
 
 COPS_NUM="${plmn_mcc}${plmn_mnc}"
 if [ -n "$COPS_NUM" ]; then
-	COUNTRY=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' /usr/share/modemdata/mccmnc.dat)
+	COUNTRY=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' /usr/share/modemdata/libs/mccmnc.dat)
 	if [ -z "$COUNTRY" ]; then
 		T=$(printf %03d $plmn_mnc)
-		COUNTRY=$(awk -F[\;] '/^'${plmn_mcc}${T}';/ {print $2}' /usr/share/modemdata/mccmnc.dat)
+		COUNTRY=$(awk -F[\;] '/^'${plmn_mcc}${T}';/ {print $2}' /usr/share/modemdata/libs/mccmnc.dat)
 		if [ -n "$COUNTRY" ]; then
 			plmn_mnc="$T"
 			COPS_NUM="${plmn_mcc}${plmn_mnc}"
@@ -70,7 +70,7 @@ if [ -n "$COPS_NUM" ]; then
 	fi
 
 	if [ -n "$FORCE_PLMN" ]; then
-		plmn_description=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' /usr/share/modemdata/mccmnc.dat)
+		plmn_description=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' /usr/share/modemdata/libs/mccmnc.dat)
 		[ -z "$plmn_description" ] && plmn_description="$COPS_NUM"
 	fi
 fi
