@@ -530,6 +530,7 @@
 334220;Mexico;Megamóvil
 338050;Bermuda / Turks and Caicos Islands;Digicel
 33805;Cayman Islands / Jamaica / Montserrat / Saint Lucia;Digicel
+338110;Jamaica;FLOW
 338180;Jamaica;FLOW
 34001;French Guiana / French Antilles;Orange
 34002;French Guiana / French Antilles;SFR Caraïbe
@@ -779,7 +780,6 @@
 42507;Israel;Hot Mobile
 42508;Israel;Cellcom
 42509;Israel;We4G
-42510;Israel;Partner
 42512;Israel;x2one
 42516;Israel;Rami Levy
 42518;Israel;Cellact Communications
@@ -923,7 +923,7 @@
 50501;Australia;Telstra
 50502;Australia;Optus
 50503;Australia;Vodafone
-50510;Australia;Norfolk Is.
+50510;Australia;Norfolk Island
 50511;Australia;Telstra
 50513;Australia;RailCorp
 50516;Australia;VicTrack
