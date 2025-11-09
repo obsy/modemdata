@@ -44,12 +44,10 @@ if [ "$REGOK" = "1" ]; then
 O=$(sms_tool -d $DEVICE at "AT+GTCCINFO?;+GTCAINFO?")
 
 if [ "x$MODE_NUM" = "x7" ] || [ "x$MODE_NUM" = "x13" ]; then
+	MODE="LTE"
 	if [ "x$MODE_NUM" = "x7" ]; then
 		LINE=$(echo "$O" | grep -A 10 "^+GTCCINFO:" | grep '^1,9')
-		if [ -n "$LINE" ]; then
-			MODE_NUM=13
-			MODE="LTE"
-		fi
+		[ -n "$LINE" ] && MODE_NUM=13
 	fi
 
 	LINE=$(echo "$O" | grep -A 10 "^+GTCCINFO:" | grep '^1,4,'$((COPS_MCC * 1))','$((COPS_MNC * 1))'')
@@ -99,25 +97,27 @@ IFS="
 	IDX=1
 	for LINE in $LINES; do
 		POS=$(((IDX + 4) * 10))
+		UL=$(echo "$LINE" | awk -F[:,] '{print $3}')
 		T=$(echo "$LINE" | awk -F[:,] '{print $4}')
 		if [ -n "$T" ]; then
 			B=$(band4g $((T - 100)))
 			addon $POS "(S${IDX}) band" "$B"
 			MODE="$MODE / $B"
+			[ "x$UL" = "x1" ] && addon 150 "(UL S) band" "$B"
 		fi
 		T=$(echo "$LINE" | awk -F[:,] '{print $5}')
 		[ -n "$T" ] && addon $((POS + 3)) "(S${IDX}) PCI" "$T"
 		T=$(echo "$LINE" | awk -F[:,] '{print $6}')
 		[ -n "$T" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T"
 		T=$(echo "$LINE" | awk -F[:,] '{print $7}')
-		if [ -n "$T" ] && [ "$T" != "255" ] ; then
+		if [ -n "$T" ] && [ "$T" != "255" ]; then
 			T1=$(bandwidth4g "$T")
 			[ -n "$T1" ] && addon $((POS + 2)) "(S${IDX}) Bandwidth DL" "$T1"
 		fi
 		T=$(echo "$LINE" | awk -F[:,] '{print $8}')
-		if [ -n "$T" ] && [ "$T" != "255" ] ; then
+		if [ -n "$T" ] && [ "$T" != "255" ] && [ "x$UL" = "x1" ]; then
 			T1=$(bandwidth4g "$T")
-			[ -n "$T1" ] && addon $((POS + 1)) "(S${IDX}) Bandwidth UL" "$T1"
+			[ -n "$T1" ] && addon 152 "(UL S) Bandwidth UL" "$T1"
 		fi
 		T=$(echo "$LINE" | awk -F[:,] '{print $13}' | xargs)
 		[ -n "$T" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T dBm"
