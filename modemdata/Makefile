@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=modemdata
-PKG_VERSION:=20251107
+PKG_VERSION:=20251110
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk

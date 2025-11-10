@@ -24,9 +24,9 @@ opengt
  let $r="+CIMI:"
  gosub readatcmdfl
 
- let $c="AT\^ICCID?^m"
- gosub readatcmd
  let $c="AT+ICCID^m"
+ gosub readatcmd
+ let $c="AT\^ICCID?^m"
  gosub readatcmd
  let $c="AT+QCCID^m"
  gosub readatcmd
@@ -50,6 +50,7 @@ opengt
  if $mid($s,1,2) = "ER" goto loop1
  if $mid($s,1,2) = "OK" goto loop2
  if $mid($s,1,2) = "AT" goto loop2
+ if $mid($s,1,4) = "+CME" goto loop2
  print $s,"\n"
  exit 0
 
