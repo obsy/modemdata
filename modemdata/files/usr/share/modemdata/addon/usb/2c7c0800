@@ -48,7 +48,7 @@ fi
 case "$MODE_NUM" in
 	7*)
 		MODE="LTE"
-		echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE_A"
+		echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE-A"
 		;;
 	11*)
 		MODE="5G SA"
@@ -60,7 +60,7 @@ case "$MODE_NUM" in
 		else
 			if echo "$O" | grep -q -i "+QCAINFO.*PCC.*LTE"; then
 				if echo "$O" | grep -q -i "+QCAINFO.*SCC"; then
-					MODE="LTE_A"
+					MODE="LTE-A"
 				fi
 			fi
 		fi

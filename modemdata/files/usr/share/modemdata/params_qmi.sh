@@ -150,7 +150,7 @@ if [ "$MODE_NUM" = "7" ]; then
 	if [ -n "$fgtype" ]; then
 		MODE="${MODE} / ?"
 	else
-		echo "$MODE" | grep -q " / B" && MODE=${MODE/LTE/LTE_A}
+		echo "$MODE" | grep -q " / B" && MODE=${MODE/LTE/LTE-A}
 	fi
 fi
 

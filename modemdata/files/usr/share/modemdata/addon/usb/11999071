@@ -44,7 +44,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		else
 			addon 50 "(S1) band" "$(band4g ${T/B/})"
 		fi
-		MODE="${MODE/LTE/LTE_A} / $(band4g ${T/B/})"
+		MODE="${MODE/LTE/LTE-A} / $(band4g ${T/B/})"
 
 		T=$(echo "$O" | awk '/.*LTE Scell chan:/ {print $7}')
 		[ -n "$T" ] && addon 54 "(S1) EARFCN" "${T#chan:}"

@@ -18,7 +18,7 @@ if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
 fi
 
 if [ "x$MODE_NUM" = "x7" ]; then
-	echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE_A"
+	echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE-A"
 
 	BWP=""
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)

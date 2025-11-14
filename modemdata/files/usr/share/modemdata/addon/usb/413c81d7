@@ -54,7 +54,7 @@ if [ -n "$T" ]; then
 	T=${T/,/}
 	T=${T/LTE_B/}
 	addon 50 "(S1) band" "$(band4g $T)"
-	MODE="${MODE/LTE/LTE_A} / $(band4g $T)"
+	MODE="${MODE/LTE/LTE-A} / $(band4g $T)"
 	T=$(echo "$O" | awk '/^SCC1 info:/ {print $8}')
 	[ -n "$T" ] && addon 52 "(S1) bandwidth" "$T MHz"
 

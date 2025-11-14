@@ -14,7 +14,7 @@ O=$(sms_tool -d $DEVICE at "AT^DEBUG?")
 case $MODE_NUM in
 	7)
 		MODE="LTE"
-		echo "$O" | grep -q scell && MODE="LTE_A"
+		echo "$O" | grep -q scell && MODE="LTE-A"
 		;;
 	11)
 		MODE="5G SA"
