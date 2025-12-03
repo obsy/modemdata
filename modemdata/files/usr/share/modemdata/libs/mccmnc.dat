@@ -105,6 +105,7 @@
 22603;Romania;Telekom
 22605;Romania;Digi.Mobil
 22610;Romania;Orange
+22619;Romania;CFR
 22801;Switzerland;Swisscom
 22802;Switzerland;Sunrise
 22803;Switzerland;Salt
@@ -196,6 +197,7 @@
 24006;Sweden;Telenor
 24007;Sweden;Tele2
 24010;Sweden;Spring Mobil
+24011;Sweden;GlobalCell
 24012;Sweden;Lycamobile
 24017;Sweden;Gotanet
 24021;Sweden;MobiSir
@@ -718,7 +720,7 @@
 41008;Pakistan;SCO Mobile
 41201;Afghanistan;AWCC
 41220;Afghanistan;Roshan
-41240;Afghanistan;MTN
+41240;Afghanistan;ATOMA
 41250;Afghanistan;Etisalat
 41255;Afghanistan;WASEL
 41280;Afghanistan;Salaam
@@ -780,7 +782,6 @@
 42507;Israel;Hot Mobile
 42508;Israel;Cellcom
 42509;Israel;We4G
-42512;Israel;x2one
 42516;Israel;Rami Levy
 42518;Israel;Cellact Communications
 42519;Israel;019 Mobile
@@ -899,7 +900,7 @@
 46692;Taiwan;Chunghwa
 46697;Taiwan;Taiwan Mobile
 46705;North Korea;Koryolink
-46706;North Korea;Kang Song NET
+46706;North Korea;Kangsong NET
 47001;Bangladesh;Grameenphone
 47002;Bangladesh;Robi
 47003;Bangladesh;Banglalink
