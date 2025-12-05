@@ -1,4 +1,5 @@
 # Fibocom L850
+# Dell DW5820e
 
 bandwidth() {
 	case $1 in
