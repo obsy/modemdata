@@ -2,6 +2,7 @@
 # Quectel RG502Q-EA
 # Quectel RM500U-CNV
 # Quectel RM520N-GL
+# Quectel RM551E-GL
 
 O=$(sms_tool -d $DEVICE at "at+qtemp")
 
