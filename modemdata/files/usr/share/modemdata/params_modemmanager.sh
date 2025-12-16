@@ -124,7 +124,7 @@ ADDON=""
 [ -n "$_rssi" ] && [ "$_rssi" != "--" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$(printf "%.1f" $_rssi) dBm\"},"
 if [ "$MODE_NUM" = "7" ]; then
 	[ -n "$_rsrp" ] && [ "$_rsrp" != "--" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$(printf "%.1f" $_rsrp) dBm\"},"
-	[ -n "$_rsrq" ] && [ "$_rsrp" != "--" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$(printf "%.1f" $_rsrq) dB\"},"
+	[ -n "$_rsrq" ] && [ "$_rsrq" != "--" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$(printf "%.1f" $_rsrq) dB\"},"
 	[ -n "$_snr" ] && [ "$_snr" != "--" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $_snr) dB\"},"
 	[ -n "$_TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"${_TAC_DEC} (${_TAC})\"},"
 fi
