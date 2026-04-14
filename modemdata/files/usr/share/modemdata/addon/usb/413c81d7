@@ -13,7 +13,7 @@ fi
 
 if [ "$REGOK" = "1" ]; then
 
-O=$(sms_tool -d $DEVICE at "at^ca_info?;^debug?")
+O=$(sms_tool -d $DEVICE at "at^ca_info?;^debug?" | tr -d '\r')
 
 O1=$(echo "$O" | sed -n '/^RAT:/,/^SCell1:/p')
 [ -z "$O1" ] && O1=$(echo "$O" | sed -n '/^EARFCN/,/^SCell1:/p')
