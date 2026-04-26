@@ -38,13 +38,13 @@ via QMI/MBIM
 /usr/share/modemdata/params_qmi.sh <device> [0|1 force PLMN from file] [0|1 MBIM device]
 ```
 
-# Precompiled packages for stable release
+# Precompiled packages (ipk)
 
 https://dl.eko.one.pl/packages/opkg/all/
 
-# Precompiled packages for development snapshots
+# Precompiled packages (apk)
 
-https://dl.eko.one.pl/packages/apk/all/
+https://dl.eko.one.pl/packages/apk/noarch/
 
 # The project is used in
 - [3ginfo](https://eko.one.pl/?p=openwrt-3ginfo) - [src](https://github.com/obsy/packages/tree/master/3ginfo)
