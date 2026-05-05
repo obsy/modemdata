@@ -20,6 +20,10 @@ FORCE_PLMN=$2
 MBIM=$3
 [ "x$MBIM" = "x1" ] && MBIM="-m" || MBIM=""
 
+json_number_first() {
+	echo "$1" | sed -n 's/.*"'"$2"'"[[:space:]]*:[[:space:]]*\(-\{0,1\}[0-9][0-9.]*\).*/\1/p' | head -n 1
+}
+
 type=""
 rssi=""
 rsrq=""
@@ -152,6 +156,18 @@ if [ "$MODE_NUM" = "7" ]; then
 	else
 		echo "$MODE" | grep -q " / B" && MODE=${MODE/LTE/LTE-A}
 	fi
+	if [ -z "$PB" ] || [ -z "$PPCI" ] || [ -z "$PEARFCN" ]; then
+		T=$(uqmi -t 3000 -s -d $DEVICE $MBIM --get-cell-location-info 2>/dev/null)
+		[ -z "$PB" ] && PB=$(json_number_first "$T" "band")
+		[ -z "$PF" ] && PF=$(json_number_first "$T" "frequency")
+		[ -z "$PPCI" ] && PPCI=$(json_number_first "$T" "serving_cell_id")
+		[ -z "$PPCI" ] && PPCI=$(json_number_first "$T" "physical_cell_id")
+		[ -z "$PEARFCN" ] && PEARFCN=$(json_number_first "$T" "channel")
+		if [ -n "$PB" ] && ! echo "$MODE" | grep -q " B${PB}"; then
+			MODE="${MODE} B${PB}"
+			[ -n "$PF" ] && MODE="${MODE} (${PF} MHz)"
+		fi
+	fi
 fi
 
 echo "{"
@@ -179,7 +195,7 @@ ADDON=""
 [ -n "$rssi" ] && ADDON="${ADDON}{\"idx\":35,\"key\":\"RSSI\",\"value\":\"$rssi dBm\"},"
 if [ "$MODE_NUM" = "7" ]; then
 	[ -n "$TAC" ] && ADDON="${ADDON}{\"idx\":23,\"key\":\"TAC\",\"value\":\"$TAC (${TAC_HEX})\"},"
-	[ -n "$PB" ] && ADDON="${ADDON}{\"idx\":30,\"key\":\"Primary band\",\"value\":\"B${PB} (${PF} MHz) @${PBW} MHz\"},"
+	[ -n "$PB" ] && ADDON="${ADDON}{\"idx\":30,\"key\":\"Primary band\",\"value\":\"B${PB}${PF:+ (${PF} MHz)}${PBW:+ @${PBW} MHz}\"},"
 	[ -n "$rsrp" ] && ADDON="${ADDON}{\"idx\":36,\"key\":\"RSRP\",\"value\":\"$rsrp dBm\"},"
 	[ -n "$rsrq" ] && ADDON="${ADDON}{\"idx\":37,\"key\":\"RSRQ\",\"value\":\"$rsrq dB\"},"
 	[ -n "$snr" ] && ADDON="${ADDON}{\"idx\":38,\"key\":\"SNR\",\"value\":\"$(printf "%.1f" $snr) dB\"},"
