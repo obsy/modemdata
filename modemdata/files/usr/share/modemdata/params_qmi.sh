@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# (c) 2023-2025 Cezary Jackiewicz <cezary@eko.one.pl>
+# (c) 2023-2026 Cezary Jackiewicz <cezary@eko.one.pl>
 #
 
 DEVICE=$1
@@ -35,10 +35,10 @@ fgrsrq=""
 fgrsrp=""
 fgsnr=""
 T=$(uqmi -t 3000 -s -d $DEVICE $MBIM --get-signal-info 2>/dev/null)
-if [ -n "$(echo "$T" | jsonfilter -q -e '@.type')" ]; then
-	eval $(echo "$T" | jsonfilter -q -e 'type=@.type' -e 'rssi=@.rssi' -e 'rsrq=@.rsrq' -e 'rsrp=@.rsrp' -e 'snr=@.snr' -e 'ecio=@.ecio')
+if [ -n "$(jsonfilter -s "$T" -q -e '@.type')" ]; then
+	eval $(jsonfilter -s "$T" -q -e 'type=@.type' -e 'rssi=@.rssi' -e 'rsrq=@.rsrq' -e 'rsrp=@.rsrp' -e 'snr=@.snr' -e 'ecio=@.ecio')
 else
-	eval $(echo "$T" | jsonfilter -q \
+	eval $(jsonfilter -s "$T" -q \
 		-e 'type=@[0].type' -e 'rssi=@[0].rssi' -e 'rsrq=@[0].rsrq' -e 'rsrp=@[0].rsrp' -e 'snr=@[0].snr' \
 		-e 'fgtype=@[1].type' -e 'fgrsrq=@[1].rsrq' -e 'fgrsrp=@[1].rsrp' -e 'fgsnr=@[1].snr')
 fi
@@ -136,12 +136,12 @@ S4PCI=""
 S4EARFCN=""
 if [ "$MODE_NUM" = "7" ]; then
 	T=$(uqmi -t 3000 -s -d $DEVICE $MBIM --get-lte-cphy-ca-info 2>/dev/null)
-	eval $(echo "$T" | jsonfilter -q -e 'PB=@.primary.band' -e 'PF=@.primary.frequency' -e 'PBW=@.primary.bandwidth' -e 'PPCI=@.primary.cell_id' -e 'PEARFCN=@.primary.channel')
+	eval $(jsonfilter -s "$T" -q -e 'PB=@.primary.band' -e 'PF=@.primary.frequency' -e 'PBW=@.primary.bandwidth' -e 'PPCI=@.primary.cell_id' -e 'PEARFCN=@.primary.channel')
 	IDX=1
 	for i in 1 2 3 4 5 6 7 8 9 10; do
-		T1=$(echo "$T" | jsonfilter -q -e "@.secondary_${i}.band")
+		T1=$(jsonfilter -s "$T" -q -e "@.secondary_${i}.band")
 		if [ -n "$T1" ]; then
-			eval $(echo "$T" | jsonfilter -q -e "S${IDX}B=@.secondary_${i}.band" -e "S${IDX}F=@.secondary_${i}.frequency" -e "S${IDX}BW=@.secondary_${i}.bandwidth" -e "S${IDX}STATE=@.secondary_${i}.state" -e "S${IDX}PCI=@.secondary_${i}.cell_id" -e "S${IDX}EARFCN=@.secondary_${i}.channel")
+			eval $(jsonfilter -s "$T" -q -e "S${IDX}B=@.secondary_${i}.band" -e "S${IDX}F=@.secondary_${i}.frequency" -e "S${IDX}BW=@.secondary_${i}.bandwidth" -e "S${IDX}STATE=@.secondary_${i}.state" -e "S${IDX}PCI=@.secondary_${i}.cell_id" -e "S${IDX}EARFCN=@.secondary_${i}.channel")
 			[ $IDX = "4" ] && break
 			IDX=$((IDX + 1))
 		fi
