@@ -26,15 +26,14 @@
 20608;Belgium;VOO
 20610;Belgium;Orange Belgium
 20612;Belgium;DIGI Belgium
+20613;Belgium;Cwave
 20620;Belgium;Base
 20801;France;Orange
 20802;France;Orange
-20803;France;Sierra Wireless
 20808;France;SFR
 20809;France;SFR
 20810;France;SFR
 20811;France;SFR
-20812;France;Truphone
 20813;France;SFR
 20814;France;SNCF Réseau
 20815;France;Free
@@ -44,8 +43,6 @@
 20825;France;LycaMobile
 20826;France;NRJ Mobile
 20828;France;AIF
-20835;France;Free
-20836;France;Free
 20888;France;Bouygues
 21303;Andorra;Som, Mobiland
 21401;Spain;Vodafone
@@ -77,7 +74,7 @@
 22001;Serbia;Yettel
 22003;Serbia;mt:s
 22005;Serbia;A1 SRB
-22011;Serbia;Globaltel
+22012;Serbia;STmobile
 22101;Kosovo;Vala
 22102;Kosovo;IPKO
 22107;Kosovo;D3 Mobile
@@ -103,7 +100,7 @@
 22299;Italy;Wind Tre
 22601;Romania;Vodafone
 22603;Romania;Telekom
-22605;Romania;Digi.Mobil
+22605;Romania;Digi.Mobil/DIGI
 22610;Romania;Orange
 22619;Romania;CFR
 22801;Switzerland;Swisscom
@@ -113,12 +110,12 @@
 22853;Switzerland;upc cablecom
 22854;Switzerland;Lycamobile
 22858;Switzerland;beeone
-22863;Switzerland;FTS
 22873;Switzerland;iWay
 22874;Switzerland;net+
 23001;Czech Republic;T-Mobile
 23002;Czech Republic;O2
 23003;Czech Republic;Vodafone
+23004;Czech Republic;Nordic Telecom
 23007;Czech Republic;T-Mobile
 23101;Slovakia;Orange
 23102;Slovakia;Telekom
@@ -169,6 +166,7 @@
 23453;United Kingdom;Tango Extend
 23454;United Kingdom;iD Mobile
 23455;United Kingdom;Sure Mobile
+23457;United Kingdom;Sky Mobile
 23458;United Kingdom;Pronto GSM
 23472;United Kingdom;Hanhaa Mobile
 23476;United Kingdom;BT
@@ -192,9 +190,6 @@
 24001;Sweden;Telia
 24002;Sweden;3
 24003;Sweden;Net 1
-24004;Sweden;SWEDEN
-24005;Sweden;Sweden 3G
-24006;Sweden;Telenor
 24007;Sweden;Tele2
 24010;Sweden;Spring Mobil
 24011;Sweden;GlobalCell
@@ -216,14 +211,13 @@
 24412;Finland;DNA
 24414;Finland;Ålcom
 24421;Finland;Elisa-
-24426;Finland;Compatel
 24433;Finland;VIRVE
 24436;Finland;Telia
 24491;Finland;Telia
 24601;Lithuania;Telia
 24602;Lithuania;BITĖ
 24603;Lithuania;Tele2
-24605;Lithuania;LitRail
+24605;Lithuania;LTG Infra
 24606;Lithuania;Mediafon
 24701;Latvia;LMT
 24702;Latvia;Tele2
@@ -268,6 +262,7 @@
 25099;Russian Federation;Beeline
 25501;Ukraine;Vodafone
 25503;Ukraine;Kyivstar
+25504;Ukraine;Intertelecom
 25506;Ukraine;lifecell
 25507;Ukraine;3Mob
 25701;Belarus;A1
@@ -291,8 +286,6 @@
 26015;Poland;Plus
 26016;Poland;Plus
 26017;Poland;Plus
-26025;Poland;TeleCube.PL
-26033;Poland;Truphone
 26034;Poland;NetWorkS!
 26039;Poland;Voxbone
 26045;Poland;Virgin Mobile
@@ -387,7 +380,6 @@
 302310;Canada;ECOTEL
 302320;Canada;Rogers Wireless
 302340;Canada;Execulink
-302352;Canada;Lyttonnet
 302370;Canada;Fido
 302380;Canada;Keewaytinook Mobile
 302420;Canada;Telus
@@ -406,13 +398,13 @@
 302690;Canada;Bell
 302710;Canada;Globalstar
 302720;Canada;Rogers Wireless
+302721;Canada;Rogers Wireless
 302723;Canada;Rogers Wireless
 302760;Canada;Public Mobile
-302770;Canada;TNW Wireless
 302780;Canada;SaskTel
+302790;Canada;NetSet
 302880;Canada;Bell
 302940;Canada;Wightman Mobility
-30801;Saint Pierre and Miquelon;Ameris
 30802;Saint Pierre and Miquelon;GLOBALTEL
 310004;United States of America;Verizon
 310006;United States of America;Verizon
@@ -429,7 +421,6 @@
 310090;United States of America;AT&T
 310100;United States of America;Plateau Wireless
 310110;United States of America;IT&E Wireless
-310120;United States Virgin Islands;T-Mobile
 310130;United States of America;Carolina West Wireless
 310140;United States of America;GTA Wireless
 310150;United States of America;AT&T
@@ -475,6 +466,8 @@
 311550;United States of America;Choice Wireless
 311560;United States of America;OTZ Cellular
 311580;United States of America;UScellular
+311588;United States of America;UScellular
+311589;United States of America;UScellular
 311600;United States of America;Limitless Mobile
 311640;United States of America;Rock Wireless
 311650;United States of America;United Wireless
@@ -537,11 +530,12 @@
 34001;French Guiana / French Antilles;Orange
 34002;French Guiana / French Antilles;SFR Caraïbe
 34003;French Antilles;FLOW
+34004;French Antilles;Free
 34008;French Antilles;Dauphin
 34020;French Guiana / French Antilles;Digicel
 342600;Barbados;FLOW
 342750;Barbados;Digicel
-344030;Antigua and Barbuda;APUA
+344030;Antigua and Barbuda;inet
 344050;Antigua and Barbuda;Digicel
 344920;Antigua and Barbuda;FLOW
 346140;Cayman Islands;FLOW
@@ -549,6 +543,7 @@
 348570;British Virgin Islands;CCT Boatphone
 348770;British Virgin Islands;Digicel
 35000;Bermuda;One
+352021;Grenada;Spice Mobile
 352030;Grenada;Digicel
 352110;Grenada;FLOW
 354860;Montserrat;FLOW
@@ -782,6 +777,7 @@
 42507;Israel;Hot Mobile
 42508;Israel;Cellcom
 42509;Israel;We4G
+42511;Israel;Merkaziya Ltd
 42516;Israel;Rami Levy
 42518;Israel;Cellact Communications
 42519;Israel;019 Mobile
@@ -889,7 +885,6 @@
 45708;Laos;TPLUS
 46000;China;China Mobile
 46001;China;China Unicom
-46003;China;China Telecom
 46009;China;China Unicom
 46011;China;China Telecom
 46015;China;China Broadnet
@@ -904,7 +899,7 @@
 47001;Bangladesh;Grameenphone
 47002;Bangladesh;Robi
 47003;Bangladesh;Banglalink
-47004;Bangladesh;TeleTalk
+47004;Bangladesh;Teletalk
 47007;Bangladesh;Airtel
 47010;Bangladesh;Banglalion
 47201;Maldives;Dhiraagu
@@ -950,9 +945,8 @@
 51503;Philippines;SMART
 51505;Philippines;Sun Cellular
 51566;Philippines;DITO
-52000;Thailand;TrueMove H / my by NT
 52001;Thailand;AIS
-52002;Thailand;NT Mobile
+52002;Thailand;my by NT
 52003;Thailand;AIS
 52004;Thailand;TrueMove H
 52005;Thailand;dtac
@@ -970,6 +964,7 @@
 52803;Brunei;UNN
 52811;Brunei;DST
 53001;New Zealand;One NZ
+53002;New Zealand;Spark
 53005;New Zealand;Spark
 53024;New Zealand;2degrees
 53602;Nauru;Digicel
@@ -1287,15 +1282,15 @@
 73023;Chile;Claro
 73024;Chile;Claro
 73026;Chile;Entel
-73029;Chile;Entel
+73029;Chile;Movistar
 73099;Chile;Will
 732001;Colombia;Movistar
-732099;Colombia;EMCALI
 732101;Colombia;Claro
 732103;Colombia;Tigo
 732111;Colombia;Tigo
 732123;Colombia;Movistar
 732154;Colombia;Virgin Mobile
+732157;Colombia;Móvil Éxito
 732187;Colombia;eTb
 732360;Colombia;WOM
 73402;Venezuela;Digitel
