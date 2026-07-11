@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# (c) 2010-2025 Cezary Jackiewicz <cezary@eko.one.pl>
+# (c) 2010-2026 Cezary Jackiewicz <cezary@eko.one.pl>
 #
 
 band4g() {
@@ -63,6 +63,7 @@ band4g() {
 		"88") echo " (410 MHz)";;
 		"103") echo " (700 MHz)";;
 		"106") echo " (900 MHz)";;
+		"111") echo " (1800 MHz)";;
 		"*") echo "";;
 	esac
 }
@@ -88,6 +89,7 @@ band5g() {
 		"28") echo " (700 MHz)";;
 		"29") echo " (700 MHz)";;
 		"30") echo " (2300 MHz)";;
+		"31") echo " (450 MHz)";;
 		"34") echo " (2100 MHz)";;
 		"38") echo " (2600 MHz)";;
 		"39") echo " (1900 MHz)";;
@@ -103,8 +105,10 @@ band5g() {
 		"65") echo " (2100 MHz)";;
 		"66") echo " (1700/2100 MHz)";;
 		"67") echo " (700 MHz)";;
+		"68") echo " (700 MHz)";;
 		"70") echo " (2000 MHz)";;
 		"71") echo " (600 MHz)";;
+		"72") echo " (450 MHz)";;
 		"74") echo " (1500 MHz)";;
 		"75") echo " (1500 MHz)";;
 		"76") echo " (1500 MHz)";;
@@ -118,6 +122,8 @@ band5g() {
 		"84") echo " (2100 MHz)";;
 		"85") echo " (700 MHz)";;
 		"86") echo " (1700 MHz)";;
+		"87") echo " (400 MHz)";;
+		"88") echo " (400 MHz)";;
 		"89") echo " (850 MHz)";;
 		"90") echo " (2500 MHz)";;
 		"91") echo " (800/1500 MHz)";;
@@ -136,6 +142,16 @@ band5g() {
 		"105") echo " (600 MHz)";;
 		"106") echo " (900 MHz)";;
 		"109") echo " (700/1500 MHz)";;
+		"110") echo " (1400 MHz)";;
+		"247") echo " (14 GHz)";;
+		"248") echo " (14 GHz)";;
+		"250") echo " (1600 MHz)";;
+		"251") echo " (1600 MHz)";;
+		"252") echo " (2100 MHz)";;
+		"253") echo " (1600 MHz)";;
+		"254") echo " (2400 MHz)";;
+		"255") echo " (1600 MHz)";;
+		"256") echo " (2100 MHz)";;
 		"257") echo " (28 GHz)";;
 		"258") echo " (26 GHz)";;
 		"259") echo " (41 GHz)";;
@@ -143,6 +159,11 @@ band5g() {
 		"261") echo " (28 GHz)";;
 		"262") echo " (47 GHz)";;
 		"263") echo " (60 GHz)";;
+		"508") echo " (14 GHz)";;
+		"509") echo " (14 GHz)";;
+		"510") echo " (28 GHz)";;
+		"511") echo " (28 GHz)";;
+		"512") echo " (28 GHz)";;
 		"*") echo "";;
 	esac
 }
