@@ -3,7 +3,7 @@
 # Quectel EG120K-EA
 # Quectel EM160R-GL
 
-O=$(sms_tool -d $DEVICE at "at+qtemp")
+O=$(sms_tool -w 300 -d $DEVICE at "at+qtemp" 2>/dev/null)
 
 T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {print $3}' | sort -r | head -n1 | xargs)
 [ -n "$T" ] && addon 10 "Temperature" "$T &deg;C"
