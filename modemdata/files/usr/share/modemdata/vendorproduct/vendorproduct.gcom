@@ -48,6 +48,7 @@ opengt
  get 0.1 "^m" $s
  if len($s) < 2 goto loop2
  if $mid($s,1,2) = "ER" goto loop1
+ if $mid($s,1,19) = "COMMAND NOT SUPPORT" goto loop1
  if $mid($s,1,2) = "OK" goto loop2
  if $mid($s,1,2) = "AT" goto loop2
  if $mid($s,1,4) = "+CME" goto loop2
