@@ -11,17 +11,13 @@ if [ "$REGOK" = "1" ]; then
 
 O=$(sms_tool -d $DEVICE at "at+qnwinfo;+qeng=\"servingcell\";+qspn")
 
-T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
-if [ -n "$T" ]; then
+T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
+if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 	if [ "x$MODE_NUM" = "x7" ]; then
-		B=$(echo $T | sed 's/.*LTE BAND \(.*\)/\1/')
+		B=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $11}' | xargs)
 		addon 30 "Primary Band" "$(band4g ${B})"
 		MODE="LTE $(band4g ${B})"
 	fi
-fi
-
-T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
-if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
 	T_DEC=$(printf "%d" "0x$T")
 	addon 23 "TAC" "${T_DEC} (${T})"
