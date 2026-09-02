@@ -59,7 +59,7 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 	addon 36 "RSRP" "$T dBm"
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}')
 	addon 37 "RSRQ" "$T dB"
-	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.1f\n", $1*0.2-20}')
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.1f\n", $1*2-20}')
 	addon 38 "SINR" "$T dB"
 fi
 
@@ -101,7 +101,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		[ -n "$T" ] && addon 56 "(S1) RSRP" "$T dBm"
 		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $9}')
 		[ -n "$T" ] && addon 57 "(S1) RSRQ" "$T dB"
-		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $11}' | awk '{printf "%.1f\n", $1*0.2-20}')
+		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $11}' | awk '{printf "%.1f\n", $1*2-20}')
 		[ -n "$T" ] && addon 58 "(S1) SINR" "$T dB"
 	fi
 fi
