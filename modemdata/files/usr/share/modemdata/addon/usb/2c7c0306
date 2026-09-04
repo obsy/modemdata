@@ -9,7 +9,7 @@ T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {t=$2*1;if($3*1>t)t=$3*1;if($4*1>t)t=$4*1
 
 if [ "$REGOK" = "1" ]; then
 
-O=$(sms_tool -d $DEVICE at "at+qnwinfo;+qeng=\"servingcell\";+qspn")
+O=$(sms_tool -d $DEVICE at "at+qeng=\"servingcell\";+qspn")
 
 T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
 if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
