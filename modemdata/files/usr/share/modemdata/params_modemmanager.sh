@@ -134,6 +134,47 @@ case "$REG" in
 		;;
 esac
 
+# LTE CA and 5G NSA details via ModemManager's shared QMI access (qmicli -p)
+QEXTRA=""
+SQ="'"
+qadd() { QEXTRA="${QEXTRA}{\"idx\":$1,\"key\":\"$2\",\"value\":\"$3\"},"; }
+QDEV=/dev/$(mmcli -m "$DEVICE" -J 2>/dev/null | jsonfilter -q -e '@.modem.generic["primary-port"]')
+if [ -c "$QDEV" ] && command -v qmicli >/dev/null 2>&1; then
+	CA=$(qmicli -p -d "$QDEV" --nas-get-lte-cphy-ca-info 2>/dev/null)
+	PB=$(echo "$CA" | awk -F"$SQ" '/Primary Cell Info/{p=1} p&&/LTE Band/{sub("eutran-","B",$2);print $2;exit}')
+	PW=$(echo "$CA" | awk -F"$SQ" '/Primary Cell Info/{p=1} p&&/DL Bandwidth/{print $2;exit}')
+	[ -n "$PB" ] && qadd 30 "Primary band" "$PB"
+	[ -n "$PW" ] && qadd 32 "Bandwidth" "$PW MHz"
+	N=0
+	SCELLS=$(echo "$CA" | awk -F"$SQ" '/Secondary Cell/{b="";w="";c="";ch=""} /Physical Cell ID/{c=$2} /RX Channel/{ch=$2} /LTE Band/{b=$2} /DL Bandwidth/{w=$2} /State/{if($2=="activated"){sub("eutran-","B",b);print b"|"w"|"c"|"ch}}')
+	_OIFS=$IFS
+	IFS='
+'
+	for L in $SCELLS; do
+		N=$((N + 1)); I=$((40 + N * 10))
+		qadd $I "(S$N) band" "${L%%|*}"; L=${L#*|}
+		qadd $((I + 2)) "(S$N) Bandwidth" "${L%%|*} MHz"; L=${L#*|}
+		qadd $((I + 3)) "(S$N) PCI" "${L%%|*}"; L=${L#*|}
+		qadd $((I + 4)) "(S$N) EARFCN" "$L"
+	done
+	IFS=$_OIFS
+	NR=$(qmicli -p -d "$QDEV" --nas-get-cell-location-info 2>/dev/null | awk -F"$SQ" '/5GNR ARFCN/{print $2;exit}')
+	if [ -n "$NR" ] && [ "$NR" -gt 0 ] 2>/dev/null; then
+		if [ "$NR" -lt 600000 ]; then F=$((NR * 5 / 1000)); else F=$((3000 + (NR - 600000) * 15 / 1000)); fi
+		NB="NR ($F MHz)"
+		[ "$F" -ge 3300 ] && [ "$F" -le 3800 ] && NB="n78"
+		_MODE="5G NSA"
+		[ -n "$PB" ] && _MODE="5G NSA ($PB + $NB)"
+		N=$((N + 1)); I=$((40 + N * 10))
+		qadd $I "(S$N) band" "$NB"
+		qadd $((I + 4)) "(S$N) EARFCN" "$NR"
+		SIG=$(qmicli -p -d "$QDEV" --nas-get-signal-info 2>/dev/null | awk '/^5G:/{p=1;next} /^[A-Z]/{p=0} p')
+		V=$(echo "$SIG" | awk -F"$SQ" '/RSRP/{print $2;exit}'); [ -n "$V" ] && qadd $((I + 6)) "(S$N) RSRP" "$V"
+		V=$(echo "$SIG" | awk -F"$SQ" '/RSRQ/{print $2;exit}'); [ -n "$V" ] && qadd $((I + 7)) "(S$N) RSRQ" "$V"
+		V=$(echo "$SIG" | awk -F"$SQ" '/SNR/{print $2;exit}'); [ -n "$V" ] && qadd $((I + 8)) "(S$N) SNR" "$V"
+	fi
+fi
+
 echo "{"
 echo "\"signal\":\"$_SIGNAL\","
 echo "\"operator_name\":\"$_plmn_description\","
@@ -157,6 +198,7 @@ if [ "$MODE_NUM" = "2" ]; then
 fi
 [ -n "$_pci" ] && ADDON="${ADDON}{\"idx\":33,\"key\":\"PCI\",\"value\":\"$_pci\"},"
 [ -n "$_earfcn" ] && ADDON="${ADDON}{\"idx\":34,\"key\":\"EARFCN\",\"value\":\"$_earfcn\"},"
+ADDON=${ADDON}${QEXTRA}
 [ -n "$ADDON" ] && echo "${ADDON%,*}"
 echo "]}"
 
