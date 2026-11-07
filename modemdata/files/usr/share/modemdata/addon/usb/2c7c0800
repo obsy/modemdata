@@ -6,19 +6,19 @@
 # Quectel RM520N-GL
 # Quectel RM551E-GL
 
-O=$(sms_tool -d $DEVICE at "at+qtemp")
+O=$(md_at "$DEVICE" "at+qtemp")
 
 T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {print $3}' | sort -r | head -n1 | xargs)
 [ -n "$T" ] && addon 10 "Temperature" "$T &deg;C"
 
-O=$(sms_tool -d $DEVICE at "AT+QUIMSLOT?")
+O=$(md_at "$DEVICE" "AT+QUIMSLOT?")
 
 T=$(echo "$O" | awk -F [:] '/^\+QUIMSLOT/{print $2}' | xargs)
 [ -n "$T" ] && addon 11 "Slot" "$T"
 
 if [ "$REGOK" = "0" ]; then
 	if [ "x$MODE_NUM" = "x11" ]; then
-		O=$(sms_tool -d $DEVICE at "at+c5greg=2;+c5greg?")
+		O=$(md_at "$DEVICE" "at+c5greg=2;+c5greg?")
 
 		# C5GREG
 		T=""
@@ -41,7 +41,7 @@ if [ "$REGOK" = "0" ]; then
 	fi
 
 	if [ "x$MODE_NUM" = "x7" ] || [ "x$MODE_NUM" = "x13" ]; then
-		O=$(sms_tool -d $DEVICE at "at+cereg=2;+cereg?")
+		O=$(md_at "$DEVICE" "at+cereg=2;+cereg?")
 
 		# CEREG
 		T=""
@@ -66,34 +66,63 @@ fi
 
 if [ "$REGOK" = "1" ]; then
 
-O=$(sms_tool -d $DEVICE at "at+qnwinfo;+qcainfo;+qeng=\"servingcell\";+qspn")
+O=$(md_at "$DEVICE" "at+qnwinfo;+qcainfo;+qeng=\"servingcell\";+qspn")
 
 T=$(echo "$O" | awk -F[,:] '/^\+QSPN/ {print $2}' | xargs)
 if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
 	COPS="$T"
 fi
 
+# Registration AcT may remain LTE (7) while an NR secondary cell is active.
+# Only connected NR measurements count: firmware also emits placeholder rows.
+NR_QENG_BAND=""
 case "$MODE_NUM" in
-	7*)
+	7 | 13)
+		# NSA QCAINFO: role, ARFCN, bandwidth, band, PCI, RSRP, RSRQ.
+		# Drop invalid NR rows so they cannot add a bogus band or imply LTE CA.
+		O=$(echo "$O" | awk -F[,:] '
+			function uint(v) { return v ~ /^[0-9]+$/ }
+			/^\+QCAINFO:/ {
+				original = $0
+				band = $5; gsub(/[[:space:]"]/, "", band)
+				if (band ~ /^(NRN|NR5GBAND)/) {
+					for (i = 2; i <= NF; i++) gsub(/[[:space:]"]/, "", $i)
+					if (band !~ /^(NRN|NR5GBAND)[1-9][0-9]*$/ ||
+					    $0 ~ /-32768/ || !uint($3) || $3 + 0 <= 0 ||
+					    !uint($6) || $6 + 0 > 1007 ||
+					    $7 !~ /^-[0-9]+([.][0-9]+)?$/ || $7 + 0 < -156 || $7 + 0 > -31 ||
+					    $8 !~ /^-?[0-9]+([.][0-9]+)?$/) next
+				}
+				print original; next
+			}
+			{ print }
+		')
+		# QENG NSA: MCC, MNC, PCI, RSRP, SINR, RSRQ [, ARFCN, band, ...].
+		# Older firmware omits the trailing band; it can still prove NSA.
+		NR_QENG_BAND=$(echo "$O" | awk -F[,:] '
+			function uint(v) { return v ~ /^[0-9]+$/ }
+			/^\+QENG:/ {
+				for (i = 2; i <= NF; i++) gsub(/[[:space:]"\r]/, "", $i)
+				if ($2 != "NR5G-NSA" || $0 ~ /-32768/ || NF < 8) next
+				if (!uint($3) || $3 + 0 <= 0 || !uint($4) ||
+				    !uint($5) || $5 + 0 > 1007 ||
+				    $6 !~ /^-[0-9]+([.][0-9]+)?$/ || $6 + 0 < -156 || $6 + 0 > -31 ||
+				    $7 !~ /^-?[0-9]+([.][0-9]+)?$/ ||
+				    $8 !~ /^-?[0-9]+([.][0-9]+)?$/) next
+				if (NF >= 9 && (!uint($9) || $9 + 0 <= 0)) next
+				if (NF >= 10 && (!uint($10) || $10 + 0 <= 0 || $10 + 0 > 1024)) next
+				print (NF >= 10 ? $10 : 0); exit
+			}
+		')
 		MODE="LTE"
-		echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE-A"
+		if [ -n "$NR_QENG_BAND" ] || echo "$O" | grep -q -i '^+QCAINFO:.*NR\(5G BAND\| N\)'; then
+			MODE="5G NSA"
+		elif echo "$O" | grep -q -i '^+QCAINFO:.*SCC.*LTE'; then
+			MODE="LTE-A"
+		fi
 		;;
 	11*)
 		MODE="5G SA"
-		;;
-	13*)
-		MODE="LTE"
-		if echo "$O" | grep -q -i "+QCAINFO.*NR5G"; then
-			MODE="5G NSA"
-		elif echo "$O" | grep -q -i "+QCAINFO.*NR N"; then
-			MODE="5G NSA"
-		else
-			if echo "$O" | grep -q -i "+QCAINFO.*PCC.*LTE"; then
-				if echo "$O" | grep -q -i "+QCAINFO.*SCC"; then
-					MODE="LTE-A"
-				fi
-			fi
-		fi
 		;;
 esac
 
@@ -150,6 +179,16 @@ else
 			fi
 			;;
 	esac
+fi
+
+# If QCAINFO has no NR band, use the validated extended QENG NSA row.
+if [ -n "$NR_QENG_BAND" ] && [ "$NR_QENG_BAND" != "0" ] &&
+   ! echo "$O" | grep -q -i '^+QCAINFO:.*NR\(5G BAND\| N\)'; then
+	if [ "$MODE" = "5G NSA" ]; then
+		MODE="$MODE $(band5g "$NR_QENG_BAND")"
+	else
+		MODE="$MODE / $(band5g "$NR_QENG_BAND")"
+	fi
 fi
 
 if [ "x$MODE_NUM" = "x7" ]; then

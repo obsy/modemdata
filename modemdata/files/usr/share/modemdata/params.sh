@@ -184,7 +184,9 @@ FORCE_PLMN=$2
 
 RES="/usr/share/modemdata"
 
-O=$(sms_tool -D -d $DEVICE at "AT+CSQ;+COPS=3,0;+COPS?;+COPS=3,2;+COPS?;+CREG=2;+CREG?;+CPIN?" | tr -d '\r')
+. "$RES/libs/at.sh"
+
+O=$(md_at "$DEVICE" "AT+CSQ;+COPS=3,0;+COPS?;+COPS=3,2;+COPS?;+CREG=2;+CREG?;+CPIN?" | tr -d '\r')
 
 # CSQ
 CSQ=$(echo "$O" | awk -F[,\ ] '/^\+(csq|CSQ)/ {print $2}')

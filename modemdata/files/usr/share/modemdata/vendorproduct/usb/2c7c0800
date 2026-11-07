@@ -1,0 +1,9 @@
+# Quectel 5G USB family: use complete, serialized AT transactions instead
+# of the generic gcom reader, which races the QModem AT daemon.
+. "$RES/libs/at.sh"
+VENDOR=$(md_identity 'AT+CGMI' '+CGMI:')
+PRODUCT=$(md_identity 'AT+CGMM' '+CGMM:')
+REVISION=$(md_identity 'AT+CGMR' '+CGMR:')
+IMEI=$(md_identity 'AT+CGSN' '+CGSN:' imei)
+IMSI=$(md_identity 'AT+CIMI' '+CIMI:' imsi)
+ICCID=$(md_identity 'AT+QCCID' '+QCCID:' iccid)

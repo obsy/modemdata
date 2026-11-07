@@ -1,0 +1,37 @@
+name: Quectel reporting regression tests
+
+on:
+  push:
+    paths:
+      - 'modemdata/**'
+      - 'tests/**'
+      - '.github/workflows/quectel-reporting.yml'
+  pull_request:
+    paths:
+      - 'modemdata/**'
+      - 'tests/**'
+      - '.github/workflows/quectel-reporting.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install test dependencies
+        run: sudo apt-get update && sudo apt-get install -y busybox python3 util-linux
+      - name: Check changed shell syntax
+        run: |
+          for script in \
+            modemdata/files/usr/share/modemdata/libs/at.sh \
+            modemdata/files/usr/share/modemdata/params.sh \
+            modemdata/files/usr/share/modemdata/addon/usb/2c7c0800 \
+            modemdata/files/usr/share/modemdata/vendorproduct/usb/2c7c0800; do
+            busybox ash -n "$script"
+          done
+      - name: AT transport and identity tests
+        run: python3 tests/test-modemdata-transport.py
+      - name: BusyBox LTE and NR parser cases
+        run: python3 tests/test-modemdata-nsa.py
